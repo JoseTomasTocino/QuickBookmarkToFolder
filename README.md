@@ -6,7 +6,7 @@ As simple as that!
 
 You can find and install the extension the [Chrome Web Store, clicking here!](https://chrome.google.com/webstore/detail/quick-bookmark-to-folder/hkipofckibjiaojbbnhicbeckppnhfnc)
 
-![Image](/artworks/Screenshot_640x400.png?raw=true)
+![Image](/artworks/animation.gif?raw=true)
 
 ## Development
 
