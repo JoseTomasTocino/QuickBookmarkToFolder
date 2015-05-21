@@ -4,13 +4,9 @@ Are you tired of manually browsing your bookmark tree to find the proper folder 
 
 As simple as that!
 
+You can find and install the extension the [Chrome Web Store, clicking here!](https://chrome.google.com/webstore/detail/quick-bookmark-to-folder/hkipofckibjiaojbbnhicbeckppnhfnc)
+
 ![Image](/artworks/Screenshot_640x400.png?raw=true)
-
-## Install
-
-Run: 
-
-    $ npm install
 
 ## Development
 
