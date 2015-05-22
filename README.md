@@ -1,6 +1,8 @@
 # QuickBookmarkToFolder
 
-Are you tired of manually browsing your bookmark tree to find the proper folder for your newly found site? With __Quick Bookmark To Folder__ you'll save a lot of time by quickly typing the name of the folder where you want to save your bookmark. Then, click the folder in the list and your bookmark will be saved.
+Are you tired of manually browsing your bookmark tree to find the proper folder for your newly found site? With __Quick Bookmark To Folder__ you'll save a lot of time by quickly typing the name of the folder where you want to save your bookmark. 
+
+Then, click the folder or use the keyboard arrow and enter keys to select the folder, and your bookmark will be saved.
 
 As simple as that!
 
