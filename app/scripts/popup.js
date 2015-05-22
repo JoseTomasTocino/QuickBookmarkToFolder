@@ -1,9 +1,12 @@
 'use strict';
 
 
+var selectedFolderIndex = -1;
 var folderInputElement = document.getElementById("folderInput");
 var folderListElement = document.getElementById("folderList");
 var noMatchingElement = document.getElementById("noMatchingMessage");
+var overlayButtonElement = document.getElementById("overlayButton");
+var folderListChildren = folderListElement.getElementsByClassName("folder");
 
 var createFolderElement = function (id, title)
 {
@@ -52,6 +55,7 @@ var addBookmarkToFolder = function (folderId)
         function ()
         {
             document.getElementById("overlay").style.display = "flex";
+            overlayButtonElement.focus();
         });
     });
 };
@@ -83,27 +87,84 @@ var populateFolderList = function (treeNodes)
     }
 
     // Show the "no matching folders" message if necessary
-    if (folderListElement.getElementsByClassName("folder").length > 0)
-    {
-        noMatchingElement.style.display = "none";
-    }
-
-    else
+    if (folderListElement.getElementsByClassName("folder").length == 0)
     {
         noMatchingElement.style.display = "block";
+        selectedFolderIndex = -1;
+    }
+
+    // Otherwise,
+    else
+    {
+        noMatchingElement.style.display = "none";
+        selectedFolderIndex = 0;
+    }
+
+    updateSelectedFolder();
+};
+
+var updateSelectedFolder = function ()
+{
+    var foldersLength = folderListChildren.length;
+
+    // Unselect any other folders
+    for (var i = 0; i < foldersLength; ++i)
+    {
+        folderListChildren[i].classList.remove("selected");
+    }
+
+    if (selectedFolderIndex > -1 && folderListChildren.length > selectedFolderIndex)
+    {
+        folderListChildren[selectedFolderIndex].classList.add("selected");
+    }
+};
+
+var clickSelectedFolder = function ()
+{
+    if (selectedFolderIndex > -1 && folderListChildren.length > selectedFolderIndex)
+    {
+        folderListChildren[selectedFolderIndex].click();
     }
 };
 
 
 // Every time a key is released in the inputbox
-folderInputElement.addEventListener("keyup", function()
+folderInputElement.addEventListener("keyup", function(e)
 {
-    // Search bookmarks matching the entered text
-    chrome.bookmarks.search(this.value, populateFolderList);
+    // If pressed enter
+    if (e.keyCode == 13)
+    {
+        clickSelectedFolder();
+    }
+
+    // If pressed UP arow
+    else if (e.keyCode == 38)
+    {
+        selectedFolderIndex = (selectedFolderIndex + folderListChildren.length - 1) % folderListChildren.length;
+        updateSelectedFolder();
+
+        e.preventDefault();
+    }
+
+    // If pressed DOWN arrow
+    else if (e.keyCode == 40)
+    {
+        selectedFolderIndex = (selectedFolderIndex + 1) % folderListChildren.length;
+        updateSelectedFolder();
+
+        e.preventDefault();
+    }
+
+    // For any other key
+    else
+    {
+        // Search bookmarks matching the entered text
+        chrome.bookmarks.search(this.value, populateFolderList);
+    }
 });
 
 // Whenever the button in the overlay is pressed, close the window
-document.getElementById("overlayButton").addEventListener("click", function()
+overlayButtonElement.addEventListener("click", function()
 {
     window.close();
 });
