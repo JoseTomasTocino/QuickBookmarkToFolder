@@ -1,5 +1,12 @@
 'use strict';
 
+/// Returns a copy of the array without duplicates
+var arrayUnique = function(a) {
+    return a.reduce(function(p, c) {
+        if (p.indexOf(c) < 0) p.push(c);
+        return p;
+    }, []);
+};
 
 var selectedFolderIndex = -1;
 var folderInputElement = document.getElementById("folderInput");
@@ -60,47 +67,68 @@ var addBookmarkToFolder = function (folderId)
     });
 };
 
-// Populates the folder list
+// Populates the folder list with the data received from the bookmark search
 var populateFolderList = function (treeNodes)
 {
     // Empty folder list
     var folderListChildren = folderListElement.getElementsByClassName("folder");
+
     for (var i = folderListChildren.length; i--; )
-    {
         folderListChildren[i].remove();
-    }
 
-    // Go through matching elements
-    for (var i = 0, length = treeNodes.length; i < length; ++i)
+    // First, get only the folder nodes
+    treeNodes = Array.prototype.filter.call(treeNodes, function (val) {
+        return !val.hasOwnProperty("url");
+    })
+
+    // Next, get the parentIds of all the elements
+    var parentIds = arrayUnique(Array.prototype.map.call(
+        treeNodes, function(val) { return val.parentId; }));
+
+    // Get the information (title) of the parents
+    chrome.bookmarks.get(parentIds, function(parents)
     {
-        var currentNode = treeNodes[i];
+        for (var i = 0, length = treeNodes.length; i < length; ++i)
+        {
+            var currentNode = treeNodes[i];
 
-        // Skip non-folder elements
-        if (currentNode.hasOwnProperty("url"))
-            continue;
+            // Get the parent for the current child
+            var parentTitle, parent = parents.find(function(val) { return val.id == currentNode.parentId; });
 
-        // Create the HTML element for the folder
-        var folder = createFolderElement(currentNode.id, currentNode.title);
+            if (parent == undefined) {
+                parentTitle = "";
+            }
+            else
+            {
+                parentTitle = parent.title + " - ";
+            }
 
-        // Attach it to the folder list
-        folderListElement.appendChild(folder);
-    }
+            // Create the HTML element for the folder
+            var folder = createFolderElement(
+                currentNode.id,
+                parentTitle + currentNode.title
+            );
 
-    // Show the "no matching folders" message if necessary
-    if (folderListElement.getElementsByClassName("folder").length == 0)
-    {
-        noMatchingElement.style.display = "block";
-        selectedFolderIndex = -1;
-    }
+            // Attach it to the folder list
+            folderListElement.appendChild(folder);
+        }
 
-    // Otherwise,
-    else
-    {
-        noMatchingElement.style.display = "none";
-        selectedFolderIndex = 0;
-    }
+        // Show the "no matching folders" message if necessary
+        if (folderListElement.getElementsByClassName("folder").length == 0)
+        {
+            noMatchingElement.style.display = "block";
+            selectedFolderIndex = -1;
+        }
 
-    updateSelectedFolder();
+        // Otherwise,
+        else
+        {
+            noMatchingElement.style.display = "none";
+            selectedFolderIndex = 0;
+        }
+
+        updateSelectedFolder();
+    });
 };
 
 var updateSelectedFolder = function ()
@@ -140,6 +168,7 @@ folderInputElement.addEventListener("keyup", function(e)
     // If pressed UP arow
     else if (e.keyCode == 38)
     {
+        // Move up the selection
         selectedFolderIndex = (selectedFolderIndex + folderListChildren.length - 1) % folderListChildren.length;
         updateSelectedFolder();
 
@@ -149,6 +178,7 @@ folderInputElement.addEventListener("keyup", function(e)
     // If pressed DOWN arrow
     else if (e.keyCode == 40)
     {
+        // Move down the selection
         selectedFolderIndex = (selectedFolderIndex + 1) % folderListChildren.length;
         updateSelectedFolder();
 
