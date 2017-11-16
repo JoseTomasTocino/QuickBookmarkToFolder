@@ -35,7 +35,7 @@ function bundle(b, filename, development) {
 
     // Uglify
     .pipe(gulpif(!development, buffer()))
-    .pipe(gulpif(!development, uglify()))
+    //.pipe(gulpif(!development, uglify()))
 
     // Save
     .pipe(gulp.dest(dest))

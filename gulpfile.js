@@ -4,15 +4,18 @@ var runSequence = require('run-sequence');
 var dir = requireDir('./tasks');
 
 gulp.task('build', function(callback) {
+  console.log("Build");
+
   runSequence(
-    'clean', [
+    'clean', 
+    [
       'fonts',
       'html',
       'images',
       'locales',
       'manifest',
       'scripts',
-      'styles'
+      'styles',
     ],
     'package',
     callback);

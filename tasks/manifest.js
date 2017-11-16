@@ -13,6 +13,8 @@ var dest = 'dist';
  ***********************************************************/
 gulp.task('manifest:incBuildNo', function(cb) {
 
+  console.log(cb)
+
   var versionUp = function(numbers, index) {
     if (!numbers[index]) {
       throw 'Build number overflow ' + numbers;
