@@ -1,5 +1,12 @@
 'use strict';
 
+window.browser = (function () {
+  return window.msBrowser ||
+    window.browser ||
+    window.chrome;
+})();
+
+
 /// Returns a copy of the array without duplicates
 var arrayUnique = function(a) {
     return a.reduce(function(p, c) {
@@ -34,7 +41,6 @@ var createFolderElement = function (id, title)
     folderElement.appendChild(titleElement);
     folderElement.addEventListener("click", function()
     {
-        console.log("Clicked folder", id);
         addBookmarkToFolder(id);
     })
 
@@ -47,12 +53,12 @@ var addBookmarkToFolder = function (folderId)
     var tabQuery = { active: true, currentWindow: true };
 
     // When the info is ready
-    chrome.tabs.query(tabQuery, function(tabs)
+    browser.tabs.query(tabQuery, function(tabs)
     {
         var currentTab = tabs[0];
 
         // Create the bookmark
-        chrome.bookmarks.create({
+        browser.bookmarks.create({
             title: currentTab.title,
             url: currentTab.url,
             parentId: folderId
@@ -76,9 +82,9 @@ var populateFolderList = function (treeNodes)
     for (var i = folderListChildren.length; i--; )
         folderListChildren[i].remove();
 
-    // First, get only the folder nodes
+    // First, get only the folder nodes. Folder nodes are those without a "url" property or an undefined one
     treeNodes = Array.prototype.filter.call(treeNodes, function (val) {
-        return !val.hasOwnProperty("url");
+        return !val.hasOwnProperty("url") || typeof(val.url) === "undefined" ;
     })
 
     // Next, get the parentIds of all the elements
@@ -86,7 +92,7 @@ var populateFolderList = function (treeNodes)
         treeNodes, function(val) { return val.parentId; }));
 
     // Get the information (title) of the parents
-    chrome.bookmarks.get(parentIds, function(parents)
+    browser.bookmarks.get(parentIds, function(parents)
     {
         for (var i = 0, length = treeNodes.length; i < length; ++i)
         {
@@ -95,7 +101,8 @@ var populateFolderList = function (treeNodes)
             // Get the parent for the current child
             var parentTitle, parent = parents.find(function(val) { return val.id == currentNode.parentId; });
 
-            if (parent == undefined) {
+            if (parent == undefined || parent.id == "root________" || parent.id == "menu________"
+                || parent.id == "toolbar_____" || parent.id == "unfiled_____") {
                 parentTitle = "";
             }
             else
@@ -189,7 +196,7 @@ folderInputElement.addEventListener("keyup", function(e)
     else
     {
         // Search bookmarks matching the entered text
-        chrome.bookmarks.search(this.value, populateFolderList);
+        browser.bookmarks.search(this.value, populateFolderList);
     }
 });
 
@@ -199,5 +206,8 @@ overlayButtonElement.addEventListener("click", function()
     window.close();
 });
 
-// Focus the inputbox
-folderInputElement.focus();
+
+// Focus the inputbox after 300ms
+setTimeout(() => {
+    folderInputElement.focus();
+}, 300);
