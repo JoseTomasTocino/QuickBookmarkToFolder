@@ -13,14 +13,4 @@ Install here:
 
 ## Development
 
-Build extension:
-
-    $ npm run build
-
-For development use:
-
-    $ npm run watch
-
-Before release run:
-
-    $ npm run release
+Clone the repo and start hacking in the `app` folder.
