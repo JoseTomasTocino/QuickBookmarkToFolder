@@ -91,51 +91,62 @@ var populateFolderList = function (treeNodes)
     var parentIds = arrayUnique(Array.prototype.map.call(
         treeNodes, function(val) { return val.parentId; }));
 
-    // Get the information (title) of the parents
-    browser.bookmarks.get(parentIds, function(parents)
+    if (parentIds.length == 0) 
     {
-        for (var i = 0, length = treeNodes.length; i < length; ++i)
+        noMatchingElement.style.display = "flex";
+        selectedFolderIndex = -1; 
+    }
+
+    else
+    {
+        // Get the information (title) of the parents
+        browser.bookmarks.get(parentIds, function(parents)
         {
-            var currentNode = treeNodes[i];
+            for (var i = 0, length = treeNodes.length; i < length; ++i)
+            {
+                var currentNode = treeNodes[i];
 
-            // Get the parent for the current child
-            var parentTitle, parent = parents.find(function(val) { return val.id == currentNode.parentId; });
+                // Get the parent for the current child
+                var parentTitle, parent = parents.find(function(val) { return val.id == currentNode.parentId; });
 
-            if (parent == undefined || parent.id == "root________" || parent.id == "menu________"
-                || parent.id == "toolbar_____" || parent.id == "unfiled_____") {
-                parentTitle = "";
+                if (parent == undefined || parent.id == "root________" || parent.id == "menu________"
+                    || parent.id == "toolbar_____" || parent.id == "unfiled_____") {
+                    parentTitle = "";
+                }
+                else
+                {
+                    parentTitle = parent.title + " - ";
+                }
+
+                // Create the HTML element for the folder
+                var folder = createFolderElement(
+                    currentNode.id,
+                    parentTitle + currentNode.title
+                );
+
+                // Attach it to the folder list
+                folderListElement.appendChild(folder);
             }
+
+            console.log("WUT", folderListElement.getElementsByClassName("folder").length == 0);
+
+            // Show the "no matching folders" message if necessary
+            if (folderListElement.getElementsByClassName("folder").length == 0)
+            {
+                noMatchingElement.style.display = "flex";
+                selectedFolderIndex = -1;
+            }
+
+            // Otherwise,
             else
             {
-                parentTitle = parent.title + " - ";
+                noMatchingElement.style.display = "none";
+                selectedFolderIndex = 0;
             }
 
-            // Create the HTML element for the folder
-            var folder = createFolderElement(
-                currentNode.id,
-                parentTitle + currentNode.title
-            );
-
-            // Attach it to the folder list
-            folderListElement.appendChild(folder);
-        }
-
-        // Show the "no matching folders" message if necessary
-        if (folderListElement.getElementsByClassName("folder").length == 0)
-        {
-            noMatchingElement.style.display = "block";
-            selectedFolderIndex = -1;
-        }
-
-        // Otherwise,
-        else
-        {
-            noMatchingElement.style.display = "none";
-            selectedFolderIndex = 0;
-        }
-
-        updateSelectedFolder();
-    });
+            updateSelectedFolder();
+        });
+    }
 };
 
 var updateSelectedFolder = function ()

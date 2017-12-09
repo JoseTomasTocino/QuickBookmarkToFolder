@@ -24,7 +24,7 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Ctrl+Alt+Q"
+        "default": "Ctrl+Shift+K"
       },
       "description": "Show the 'Quick Bookmark To Folder' popup"
     }
