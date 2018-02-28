@@ -47,6 +47,27 @@ var createFolderElement = function (id, title)
     return folderElement;
 };
 
+var emptyFolderList = function ()
+{
+    for (var i = folderListChildren.length; i--; )
+        folderListChildren[i].remove();
+};
+
+var showNoMatches = function ()
+{
+    emptyFolderList();
+
+    // Show the "no matches" message
+    noMatchingElement.style.display = "flex";
+    selectedFolderIndex = -1;
+};
+
+var hideNoMatches = function ()
+{
+    noMatchingElement.style.display = "none";
+    selectedFolderIndex = 0;
+};
+
 var addBookmarkToFolder = function (folderId)
 {
     // Get the current tab information (url and title)
@@ -69,6 +90,9 @@ var addBookmarkToFolder = function (folderId)
         {
             document.getElementById("overlay").style.display = "flex";
             overlayButtonElement.focus();
+
+            // Auto close the window after some time
+            setTimeout(() => { window.close(); }, 500);
         });
     });
 };
@@ -76,16 +100,45 @@ var addBookmarkToFolder = function (folderId)
 // Populates the folder list with the data received from the bookmark search
 var populateFolderList = function (treeNodes)
 {
-    // Empty folder list
-    var folderListChildren = folderListElement.getElementsByClassName("folder");
+    emptyFolderList();
 
-    for (var i = folderListChildren.length; i--; )
-        folderListChildren[i].remove();
+    // If there're no matching folders, show the "no matches" message
+    if (treeNodes.length == 0)
+    {
+        showNoMatches();
+        return;
+    }
 
     // First, get only the folder nodes. Folder nodes are those without a "url" property or an undefined one
-    treeNodes = Array.prototype.filter.call(treeNodes, function (val) {
-        return !val.hasOwnProperty("url") || typeof(val.url) === "undefined" ;
-    })
+    // Filter the matching treenodes to keep just the folders. A BookmarkTreeNode is a folder if it maches any of the following:
+    //  - If it has the property "type" set to "folder", or
+    //  - If it has the property "url" but it's "undefined", or
+    //  - If it doesn't have the "url" property
+
+    treeNodes = Array.prototype.filter.call(treeNodes, (val) =>
+    {
+        if (val.hasOwnProperty("type"))
+        {
+            return val.type === "folder";
+        }
+        else if (val.hasOwnProperty("url"))
+        {
+            return val.url === "undefined";
+        }
+        else 
+        {
+            return true;
+        }
+    });
+
+    // If there're no matching folders, show the "no matches" message
+    if (treeNodes.length == 0)
+    {
+        noMatchingElement.style.display = "flex";
+        selectedFolderIndex = -1;
+
+        return;
+    }
 
     // Next, get the parentIds of all the elements
     var parentIds = arrayUnique(Array.prototype.map.call(
@@ -93,60 +146,57 @@ var populateFolderList = function (treeNodes)
 
     if (parentIds.length == 0) 
     {
-        noMatchingElement.style.display = "flex";
-        selectedFolderIndex = -1; 
+        showNoMatches();
+        return;
     }
 
-    else
+    // Get the information (title) of the parents
+    browser.bookmarks.get(parentIds, function(parents)
     {
-        // Get the information (title) of the parents
-        browser.bookmarks.get(parentIds, function(parents)
+        for (var i = 0, length = treeNodes.length; i < length; ++i)
         {
-            for (var i = 0, length = treeNodes.length; i < length; ++i)
+            var currentNode = treeNodes[i];
+
+            // Get the parent for the current child
+            var parentTitle, parent = parents.find(function(val) { return val.id == currentNode.parentId; });
+            console.log(currentNode.title, parent, parent.id);
+
+            if (parent == undefined || 
+                parent.id == "root________" || 
+                // parent.id == "menu________" || 
+                parent.id == "toolbar_____" || 
+                parent.id == "unfiled_____") 
             {
-                var currentNode = treeNodes[i];
-
-                // Get the parent for the current child
-                var parentTitle, parent = parents.find(function(val) { return val.id == currentNode.parentId; });
-
-                if (parent == undefined || parent.id == "root________" || parent.id == "menu________"
-                    || parent.id == "toolbar_____" || parent.id == "unfiled_____") {
-                    parentTitle = "";
-                }
-                else
-                {
-                    parentTitle = parent.title + " - ";
-                }
-
-                // Create the HTML element for the folder
-                var folder = createFolderElement(
-                    currentNode.id,
-                    parentTitle + currentNode.title
-                );
-
-                // Attach it to the folder list
-                folderListElement.appendChild(folder);
+                parentTitle = "";
             }
-
-            console.log("WUT", folderListElement.getElementsByClassName("folder").length == 0);
-
-            // Show the "no matching folders" message if necessary
-            if (folderListElement.getElementsByClassName("folder").length == 0)
-            {
-                noMatchingElement.style.display = "flex";
-                selectedFolderIndex = -1;
-            }
-
-            // Otherwise,
             else
             {
-                noMatchingElement.style.display = "none";
-                selectedFolderIndex = 0;
+                parentTitle = parent.title + " - ";
             }
 
-            updateSelectedFolder();
-        });
-    }
+            // Create the HTML element for the folder
+            var folder = createFolderElement(
+                currentNode.id,
+                parentTitle + currentNode.title
+            );
+
+            // Attach it to the folder list
+            folderListElement.appendChild(folder);
+        }
+
+        // Show the "no matching folders" message if necessary
+        if (folderListElement.getElementsByClassName("folder").length == 0)
+        {
+            showNoMatches();
+        }
+
+        else
+        {
+            hideNoMatches();
+        }
+
+        updateSelectedFolder();
+    });
 };
 
 var updateSelectedFolder = function ()
@@ -156,7 +206,7 @@ var updateSelectedFolder = function ()
     // Unselect any other folders
     for (var i = 0; i < foldersLength; ++i)
     {
-        folderListChildren[i].classList.remove("selected");
+        folderListChildren[i].classList.remove("selected");folderListChildren
     }
 
     if (selectedFolderIndex > -1 && folderListChildren.length > selectedFolderIndex)
@@ -206,8 +256,16 @@ folderInputElement.addEventListener("keyup", function(e)
     // For any other key
     else
     {
-        // Search bookmarks matching the entered text
-        browser.bookmarks.search(this.value, populateFolderList);
+        if (this.value.length == 0) 
+        {
+            showNoMatches();
+        }
+
+        else
+        {
+            // Search bookmarks matching the entered text
+            browser.bookmarks.search(this.value, populateFolderList);
+        }
     }
 });
 
