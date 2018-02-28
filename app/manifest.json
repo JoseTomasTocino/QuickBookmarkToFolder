@@ -1,7 +1,7 @@
 {
   "name": "QuickBookmarkToFolder",
 
-  "version": "0.0.6",
+  "version": "0.0.7",
   "manifest_version": 2,
   "description": "Lets you quickly find a bookmark folder and save a bookmark inside",
   "icons": {

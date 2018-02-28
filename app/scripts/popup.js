@@ -206,7 +206,7 @@ var updateSelectedFolder = function ()
     // Unselect any other folders
     for (var i = 0; i < foldersLength; ++i)
     {
-        folderListChildren[i].classList.remove("selected");folderListChildren
+        folderListChildren[i].classList.remove("selected");
     }
 
     if (selectedFolderIndex > -1 && folderListChildren.length > selectedFolderIndex)
