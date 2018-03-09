@@ -6,6 +6,26 @@ window.browser = (function () {
     window.chrome;
 })();
 
+// Debounce function from https://davidwalsh.name/javascript-debounce-function
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+var debounce = function(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 
 /// Returns a copy of the array without duplicates
 var arrayUnique = function(a) {
@@ -223,6 +243,10 @@ var clickSelectedFolder = function ()
     }
 };
 
+var performSearch = debounce(function()
+{
+	browser.bookmarks.search(folderInputElement.value, populateFolderList);
+}, 100);
 
 // Every time a key is released in the inputbox
 folderInputElement.addEventListener("keyup", function(e)
@@ -264,7 +288,7 @@ folderInputElement.addEventListener("keyup", function(e)
         else
         {
             // Search bookmarks matching the entered text
-            browser.bookmarks.search(this.value, populateFolderList);
+            performSearch();
         }
     }
 });
