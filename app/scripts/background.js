@@ -25,7 +25,7 @@ browser.bookmarks.onRemoved.addListener(function hidePageAction() {
 
 // handle messages
 function handleMessage(request) {
-  if (request.greeting = "Adding Bookmark To Folder") {
+  if (request.greeting == "Adding Bookmark To Folder") {
     var removingBookmark = browser.bookmarks.remove(bookmarkId);
   }
 }
