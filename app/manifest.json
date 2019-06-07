@@ -17,6 +17,15 @@
     "default_title": "Quick Bookmark To Folder",
     "default_popup": "html/popup.html"
   },
+  "page_action": {
+    "browser_style": true,
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_title": "Quick Bookmark To Folder",
+    "default_popup": "html/popup.html"
+  },
   "permissions": [
     "bookmarks",
     "tabs"
@@ -26,7 +35,11 @@
       "suggested_key": {
         "default": "Ctrl+Shift+K"
       },
-      "description": "Show the 'Quick Bookmark To Folder' popup"
+      "description": "Show the 'Quick Bookmark To Folder' popup in browser"
     }
+  },
+  "background": {
+    "scripts": ["scripts/background.js"]
   }
 }
+
