@@ -35,9 +35,15 @@
       "suggested_key": {
         "default": "Ctrl+Shift+K"
       },
-      "description": "Show the 'Quick Bookmark To Folder' popup in browser"
+      "description": "Show the 'Quick Bookmark To Folder' popup in browser action"
+    },
+    "_execute_page_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L" // example
+      },
+      "description": "Show the 'Quick Bookmark To Folder' popup in page action"
     }
-  },
+  }
   "background": {
     "scripts": ["scripts/background.js"]
   }
