@@ -43,7 +43,7 @@
       },
       "description": "Show the 'Quick Bookmark To Folder' popup in page action"
     }
-  }
+  },
   "background": {
     "scripts": ["scripts/background.js"]
   }
