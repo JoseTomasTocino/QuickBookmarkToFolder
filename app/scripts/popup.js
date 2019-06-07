@@ -90,6 +90,9 @@ var hideNoMatches = function ()
 
 var addBookmarkToFolder = function (folderId)
 {
+    // Message background script to delete duplicate bookmark
+    notifyBackgroundPage("Adding Bookmark To Folder");
+    
     // Get the current tab information (url and title)
     var tabQuery = { active: true, currentWindow: true };
 
@@ -304,3 +307,10 @@ overlayButtonElement.addEventListener("click", function()
 setTimeout(() => {
     folderInputElement.focus();
 }, 300);
+
+// send messages to background script
+function notifyBackgroundPage(greeting) {
+  var sending = browser.runtime.sendMessage({
+    greeting: greeting
+  });
+}
