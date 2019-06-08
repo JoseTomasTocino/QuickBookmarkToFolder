@@ -19,7 +19,8 @@
   },
   "permissions": [
     "bookmarks",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "commands": {
     "_execute_browser_action": {
