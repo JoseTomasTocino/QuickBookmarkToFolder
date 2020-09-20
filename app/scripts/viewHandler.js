@@ -1,6 +1,7 @@
 // import * as util from "./util";
 
-class ViewHandler {
+class ViewHandler
+{
     constructor()
     {
         this.folderInputElement = document.getElementById("folderInput");
@@ -10,7 +11,7 @@ class ViewHandler {
         this.overlayButtonElement = document.getElementById("overlayButton");
         this.folderListChildren = this.folderListElement.getElementsByClassName("folder");
 
-        this.overlayButtonElement.addEventListener("click", function()
+        this.overlayButtonElement.addEventListener("click", function ()
         {
             window.close();
         });
@@ -30,7 +31,7 @@ class ViewHandler {
 
     addSearchRequestedListener(listener)
     {
-       this.searchRequestedListeners.add(listener);
+        this.searchRequestedListeners.add(listener);
     }
 
     focusInputBox()
@@ -43,7 +44,7 @@ class ViewHandler {
         return this.folderInputElement.value;
     }
 
-    showNoMatches ()
+    showNoMatches()
     {
         this.emptyFolderList();
 
@@ -60,8 +61,7 @@ class ViewHandler {
 
     clickSelectedFolder()
     {
-        if (this.selectedFolderIndex > -1 && this.folderListChildren.length > this.selectedFolderIndex)
-        {
+        if (this.selectedFolderIndex > -1 && this.folderListChildren.length > this.selectedFolderIndex) {
             this.folderListChildren[this.selectedFolderIndex].click();
         }
     };
@@ -71,20 +71,18 @@ class ViewHandler {
         let foldersLength = this.folderListChildren.length;
 
         // Unselect any other folders
-        for (let i = 0; i < foldersLength; ++i)
-        {
+        for (let i = 0; i < foldersLength; ++i) {
             this.folderListChildren[i].classList.remove("selected");
         }
 
-        if (this.selectedFolderIndex > -1 && this.folderListChildren.length > this.selectedFolderIndex)
-        {
+        if (this.selectedFolderIndex > -1 && this.folderListChildren.length > this.selectedFolderIndex) {
             this.folderListChildren[this.selectedFolderIndex].classList.add("selected");
         }
     };
 
     emptyFolderList()
     {
-        for (let i = this.folderListChildren.length; i--; ) {
+        for (let i = this.folderListChildren.length; i--;) {
             this.folderListChildren[i].remove();
         }
     };
@@ -95,7 +93,10 @@ class ViewHandler {
         this.overlayButtonElement.focus();
 
         // Auto close the window after some time
-        setTimeout(() => { window.close(); }, 500);
+        setTimeout(() =>
+        {
+            window.close();
+        }, 500);
     }
 
     createFolderElement(id, title)
@@ -122,17 +123,15 @@ class ViewHandler {
 
     keyPressedInInput(e)
     {
-        console.log("Key pressed:", e.keyCode);
+        console.log("Key pressed:", e.code);
 
         // If pressed enter
-        if (e.keyCode === 13)
-        {
+        if (e.code === "Enter" || e.code === "NumpadEnter") {
             this.clickSelectedFolder();
         }
 
         // If pressed UP arrow
-        else if (e.keyCode === 38)
-        {
+        else if (e.code === "ArrowUp") {
             // Move up the selection
             this.selectedFolderIndex = (this.selectedFolderIndex + this.folderListChildren.length - 1) % this.folderListChildren.length;
             this.updateSelectedFolder();
@@ -141,8 +140,7 @@ class ViewHandler {
         }
 
         // If pressed DOWN arrow
-        else if (e.keyCode === 40)
-        {
+        else if (e.code === "ArrowDown") {
             // Move down the selection
             this.selectedFolderIndex = (this.selectedFolderIndex + 1) % this.folderListChildren.length;
             this.updateSelectedFolder();
@@ -151,15 +149,10 @@ class ViewHandler {
         }
 
         // For any other key
-        else
-        {
-            if (e.target.value.length === 0)
-            {
+        else {
+            if (e.target.value.length === 0) {
                 this.showNoMatches();
-            }
-
-            else
-            {
+            } else {
                 this.searchRequestedListeners.forEach(x => x());
             }
         }
@@ -170,8 +163,7 @@ class ViewHandler {
         this.emptyFolderList();
 
         // If there're no matching folders, show the "no matches" message
-        if (treeNodes.length === 0)
-        {
+        if (treeNodes.length === 0) {
             this.showNoMatches();
             return;
         }
@@ -184,23 +176,17 @@ class ViewHandler {
 
         treeNodes = Array.prototype.filter.call(treeNodes, (val) =>
         {
-            if (val.hasOwnProperty("type"))
-            {
+            if (val.hasOwnProperty("type")) {
                 return val.type === "folder";
-            }
-            else if (val.hasOwnProperty("url"))
-            {
+            } else if (val.hasOwnProperty("url")) {
                 return val.url === "undefined";
-            }
-            else
-            {
+            } else {
                 return true;
             }
         });
 
         // If there're no matching folders, show the "no matches" message
-        if (treeNodes.length === 0)
-        {
+        if (treeNodes.length === 0) {
             this.showNoMatches();
             // this.noMatchingElement.style.display = "flex";
             // this.selectedFolderIndex = -1;
@@ -210,35 +196,33 @@ class ViewHandler {
 
         // Next, get the parentIds of all the elements
         let parentIds = arrayUnique(Array.prototype.map.call(
-            treeNodes, function(val) { return val.parentId; }));
+            treeNodes, function (val)
+            {
+                return val.parentId;
+            }));
 
-        if (parentIds.length === 0)
-        {
+        if (parentIds.length === 0) {
             this.showNoMatches();
             return;
         }
 
         // Get the information (title) of the parents
-        browser.bookmarks.get(parentIds, function(parents)
+        browser.bookmarks.get(parentIds, function (parents)
         {
-            for (let i = 0, length = treeNodes.length; i < length; ++i)
-            {
+            for (let i = 0, length = treeNodes.length; i < length; ++i) {
                 let currentNode = treeNodes[i];
 
                 // Get the parent for the current child
-                let parentTitle, parent = parents.find(function(val) { return val.id === currentNode.parentId; });
+                let parentTitle, parent = parents.find(function (val)
+                {
+                    return val.id === currentNode.parentId;
+                });
                 console.log(currentNode.title, parent, parent.id);
 
-                if (parent === undefined ||
-                    parent.id === "root________" ||
-                    // parent.id == "menu________" ||
-                    parent.id === "toolbar_____" ||
-                    parent.id === "unfiled_____")
-                {
+                if (parent.id === "root________" || parent.id === "toolbar_____" ||
+                    parent.id === "unfiled_____") {
                     parentTitle = "";
-                }
-                else
-                {
+                } else {
                     parentTitle = parent.title + " - ";
                 }
 
@@ -250,13 +234,9 @@ class ViewHandler {
             }
 
             // Show the "no matching folders" message if necessary
-            if (this.folderListElement.getElementsByClassName("folder").length === 0)
-            {
+            if (this.folderListElement.getElementsByClassName("folder").length === 0) {
                 this.showNoMatches();
-            }
-
-            else
-            {
+            } else {
                 this.hideNoMatches();
             }
 
