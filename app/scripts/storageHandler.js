@@ -2,17 +2,18 @@
 
 const MAX_RECENT_FOLDERS = 10;
 
-class StorageHandler {
-    getRecentFolders(callback) {
+class StorageHandler
+{
+    getRecentFolders(callback)
+    {
         // Check whether there are "recently used folders" in local storage
-        browser.storage.local.get("recent-folders", (data) => {
+        browser.storage.local.get("recent-folders", (data) =>
+        {
             let recentFolders;
 
             if (data.hasOwnProperty("recent-folders")) {
                 recentFolders = data["recent-folders"];
-            }
-
-            else {
+            } else {
                 recentFolders = [];
             }
 
@@ -22,15 +23,15 @@ class StorageHandler {
         });
     }
 
-    saveRecentFolder(folderId, folderName) {
-        browser.storage.local.get("recent-folders", (data) => {
+    saveRecentFolder(folderId, folderName)
+    {
+        browser.storage.local.get("recent-folders", (data) =>
+            {
                 let recentFolders;
 
                 if (data.hasOwnProperty("recent-folders")) {
                     recentFolders = data["recent-folders"];
-                }
-
-                else {
+                } else {
                     recentFolders = [];
                 }
 
@@ -40,7 +41,8 @@ class StorageHandler {
 
                 recentFolders.push({folderId: folderId, folderName: folderName});
 
-                browser.storage.local.clear(() => {
+                browser.storage.local.clear(() =>
+                {
                     browser.storage.local.set({"recent-folders": recentFolders});
                 });
             }

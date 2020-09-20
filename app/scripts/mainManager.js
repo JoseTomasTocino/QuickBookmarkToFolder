@@ -19,6 +19,11 @@ class MainManager
     {
         this.viewHandler.focusInputBox();
 
+        this.showRecentFolders();
+    }
+
+    showRecentFolders()
+    {
         this.storageHandler.getRecentFolders((folders) =>
         {
             this.viewHandler.hideNoMatches();
