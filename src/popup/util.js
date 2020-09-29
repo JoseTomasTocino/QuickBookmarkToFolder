@@ -18,7 +18,7 @@ let debounce = function(func, wait, immediate) {
     };
 };
 
-window.browser = (function () {
+let theBrowser = (function () {
     return window.msBrowser ||
         window.browser ||
         window.chrome;
@@ -30,3 +30,10 @@ let arrayUnique = function(a) {
         return p;
     }, []);
 };
+
+
+module.exports = {
+    debounce,
+    theBrowser,
+    arrayUnique
+}

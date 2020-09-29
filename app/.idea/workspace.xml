@@ -2,7 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e34ad0f-977c-432e-bc53-27125bde56cf" name="Default" comment="Change whole architecture">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_locales/en/messages.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fonts/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/popup.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/1432265289_Bookmark_2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/icon-128.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/icon-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/icon-19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/icon-32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/icon-38.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/mainManager.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/popup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/storageHandler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/util.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/viewHandler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/popup.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../buildPackage.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,39 +46,6 @@
         <option value="JavaScript File" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>debounce</find>
-      <find>arrayunique</find>
-      <find>window.browser</find>
-      <find>browser</find>
-      <find>import \* as util from \&quot;\.\/util\&quot;\;\n\nexport default class StorageHandler \{\n    getRecentFolders\(callback\)\n    \{\n        \/\/ Check whether there are \&quot;recently used folders\&quot; in local storage\n        util\.browser\.storage\.local\.get\(\&quot;recent\-folders\&quot;\, \(data\)\=\&gt;\n        \{\n            let recentFolders\;\n\n            if \(data\.hasOwnProperty\(\&quot;recent\-folders\&quot;\)\)\n            \{\n                recentFolders \= data\[\&quot;recent\-folders\&quot;\]\;\n            \}\n\n            else\n            \{\n                recentFolders \= \[\]\;\n            \}\n\n            if \(recentFolders\.length \&gt; 0\)\n            \{\n                callback\(folders\)\;\n            \}\n        \}\)\;\n    \}\n    \n    saveRecentFolder\(folderId\, folderName\) \n    \{\n        util\.browser\.storage\.local\.get\(\&quot;recent\-folders\&quot;\, \(data\) \=\&gt;\n            \{\n                let recentFolders\;\n\n                if \(data\.hasOwnProperty\(\&quot;recent\-folders\&quot;\)\)\n                \{\n                    recentFolders \= data\[\&quot;recent\-folders\&quot;\]\;\n                \}\n\n                else\n                \{\n                    recentFolders \= \[\]\;\n                \}\n\n                while \(recentFolders\.length \&gt; MAX_RECENT_FOLDERS\)\n                \{\n                    recentFolders\.shift\(\)\;\n                \}\n\n                recentFolders\.push\(\{ folderId\: folderId\, folderName\: folderName \}\)\;\n\n                util\.browser\.storage\.local\.clear\(\(\) \=\&gt; \{\n                    util\.browser\.storage\.local\.set\(\{\&quot;recent\-folders\&quot;\: recentFolders\}\)\;\n                \}\)\;\n            \}\n        \)\;\n    \}\n\}\n</find>
-      <find>createfolderElement</find>
-      <find>performSearch</find>
-      <find>var</find>
-      <find>MAX_RECE</find>
-      <find>util.</find>
-      <find>MAX_RE</find>
-      <find>populateFolderList</find>
-      <find>emptyFolderList</find>
-      <find>console.l</find>
-      <find>console.</find>
-      <find>this.value</find>
-      <find>create</find>
-      <find>createFolderElement</find>
-      <find>selectedFolderIndex</find>
-      <find>this.this</find>
-      <find>showOverla</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>util.browser</replace>
-      <replace>let</replace>
-      <replace>this</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>C:\Users\Jose\Documents\QuickBookmarkToFolder\app\scripts</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -75,7 +69,7 @@
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/TestMultiWindow" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../vue/quick-bookmark-to-folder" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
   </component>
@@ -109,6 +103,12 @@
       <workItem from="1573666908000" duration="29000" />
       <workItem from="1577142360439" duration="34000" />
       <workItem from="1600635248864" duration="2590000" />
+      <workItem from="1601150893099" duration="2500000" />
+      <workItem from="1601166444729" duration="599000" />
+      <workItem from="1601205819927" duration="599000" />
+      <workItem from="1601234534836" duration="2120000" />
+      <workItem from="1601310330165" duration="7247000" />
+      <workItem from="1601405480099" duration="3823000" />
     </task>
     <task id="LOCAL-00001" summary="Change whole architecture">
       <created>1560015769977</created>
