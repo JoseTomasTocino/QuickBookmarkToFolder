@@ -5,8 +5,7 @@
   "description": "Lets you quickly find a bookmark folder and save a bookmark inside",
   "default_locale": "en",
   "permissions": [
-    "<all_urls>",
-    "*://*/*",
+      "activeTab",
     "bookmarks",
     "tabs",
     "storage"

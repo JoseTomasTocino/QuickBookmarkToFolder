@@ -28,6 +28,7 @@ export default {
     methods: {
         moveDown() {
             this.currentSelectionIndex += 1;
+            
 
             if (this.currentSelectionIndex >= this.entries.length)
                 this.currentSelectionIndex = 0;
