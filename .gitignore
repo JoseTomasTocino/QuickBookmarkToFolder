@@ -25,3 +25,5 @@ pnpm-debug.log*
 # Vue Browser Extension Output
 *.pem
 *.pub
+*.zip
+/artifacts
