@@ -9,7 +9,8 @@
             <SearchBox v-on:search-term-changed="searchTermChanged($event)"></SearchBox>
             <FolderList v-on:folder-selected="addToFolder($event)" ref="folderList" :entries="matchingFolders"></FolderList>
         </div>
-        <Overlay v-if="overlayVisible"></Overlay>
+        <Options></Options>
+        <Overlay v-if="overlayVisible" :message="overlayMessage" v-on:options-saved="optionsSaved()"></Overlay>
     </div>
 </template>
 
@@ -17,7 +18,9 @@
     import SearchBox from '../components/SearchBox.vue'
     import FolderList from '../components/FolderList.vue'
     import Overlay from '../components/Overlay.vue'
-    import * as util from './util';
+    import Options from '../components/Options.vue'
+
+    import * as util from '../util';
     import StorageHandler from './storageHandler';
 
 
@@ -27,13 +30,15 @@
         {
             return {
                 matchingFolders: [],
-                overlayVisible: false
+                overlayVisible: false,
+                overlayMessage: 'None'
             }
         },
         components: {
             SearchBox,
             FolderList,
-            Overlay
+            Overlay,
+            Options
         },
         mounted: function()
         {
@@ -120,8 +125,10 @@
 
             addToFolder(folderId)
             {
+                // Get the selected folder
                 let matchingEntry = this.matchingFolders.find(element => element.id === folderId);
 
+                // Save the selected folder in local storage
                 this.storageHandler.saveRecentFolder(matchingEntry.id, matchingEntry.title);
 
                 // Get the current tab information (url and title)
@@ -137,19 +144,25 @@
                         title: currentTab.title,
                         url: currentTab.url,
                         parentId: folderId
-                    }, this.showOverlay.bind(this));
+                    }, this.showOverlay.bind(this, "Bookmark added"));
                 });
             },
 
-            showOverlay()
+            showOverlay(message)
             {
                 this.overlayVisible = true;
+                this.overlayMessage = message;
 
                 // Auto close the window after some time
                 setTimeout(() =>
                 {
                     window.close();
                 }, 5000);
+            },
+
+            optionsSaved()
+            {
+                this.showOverlay("Options saved");
             }
         }
     }

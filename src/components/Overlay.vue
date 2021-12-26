@@ -1,11 +1,16 @@
 <template>
     <div id="overlay">
-        <a href="#" id="overlayButton">Bookmark added</a>
+        <a href="#" id="overlayButton">{{ message }}</a>
     </div>
 </template>
 
 <script>
-
+    export default {
+        props:
+            {
+                message: String
+            }
+    }
 </script>
 
 <style scoped>

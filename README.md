@@ -11,6 +11,13 @@ Install here:
 
 ![Image](/artworks/animation.gif?raw=true)
 
+## Dependencies
+
+This project uses the following tech stack:
+
+* [Vue.js](https://vuejs.org/), a JavaScript framework.
+* [Vue CLI](https://cli.vuejs.org/), a tool for Vue.js development with interesting stuff, like a plugin system.
+* [vue-cli-plugin-browser-extension](https://github.com/adambullmer/vue-cli-plugin-browser-extension), a plugin for Vue CLI for developing browser extensions.
 
 ## Project setup
 ```
