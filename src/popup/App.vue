@@ -153,6 +153,8 @@
                         url: currentTab.url,
                         parentId: folderId
                     }, this.showOverlay.bind(this, "Bookmark added"));
+
+                    util.theBrowser.tabs.remove(currentTab.id);
                 });
             },
 
