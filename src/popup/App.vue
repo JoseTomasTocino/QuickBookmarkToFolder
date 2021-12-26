@@ -8,8 +8,8 @@
             <div class="info">Type the name of the folder where you want to save the bookmark</div>
             <SearchBox v-on:search-term-changed="searchTermChanged($event)"></SearchBox>
             <FolderList v-on:folder-selected="addToFolder($event)" ref="folderList" :entries="matchingFolders"></FolderList>
+            <Options ref="options"></Options>
         </div>
-        <Options></Options>
         <Overlay v-if="overlayVisible" :message="overlayMessage" v-on:options-saved="optionsSaved()"></Overlay>
     </div>
 </template>
@@ -119,6 +119,14 @@
 
                         // Add matching folder
                         this.matchingFolders.push({id: currentNode.id, title: parentTitle + currentNode.title});
+                    }
+
+                    // Trim the matching folders container to fit the maximum entry count set by the options
+                    let entryCount = this.$refs.options.$data.entryCount;
+
+                    if (this.matchingFolders.length > entryCount)
+                    {
+                        this.matchingFolders = this.matchingFolders.splice(0, entryCount);
                     }
                 }.bind(this));
             },

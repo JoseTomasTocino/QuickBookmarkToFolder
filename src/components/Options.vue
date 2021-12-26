@@ -29,12 +29,6 @@
                 autoCloseTab: false
             }
         },
-        watch: {
-            searchTerm: function (newTerm)
-            {
-                this.$emit('search-term-changed', newTerm);
-            }
-        },
         mounted() {
             // Load options from storage
             util.theBrowser.storage.sync.get({
@@ -52,6 +46,7 @@
                     entryCount: this.entryCount,
                     autoCloseTab: this.autoCloseTab
                 });
+                this.showingOptions = false;
             }
         }
     }
