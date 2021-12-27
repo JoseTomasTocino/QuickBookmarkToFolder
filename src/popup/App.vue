@@ -154,7 +154,9 @@
                         parentId: folderId
                     }, this.showOverlay.bind(this, "Bookmark added"));
 
-                    util.theBrowser.tabs.remove(currentTab.id);
+                    if (this.$refs.options.$data.autoCloseTab) {
+                        util.theBrowser.tabs.remove(currentTab.id);
+                    }
                 });
             },
 
